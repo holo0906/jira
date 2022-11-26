@@ -24,7 +24,7 @@ export const useMount = (callback: () => void) => {
 };
 
 // delay?: number 表示该参数可以不传，要么就传 number
-export const useDebounce = (value: unknown, delay?: number): any => {
+export const useDebounce = <V>(value: V, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     // 每次 value 变化后设置一个定时器
