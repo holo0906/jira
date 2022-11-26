@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // 处理 value 为0的情况，0作为 value 不应该被 delete
-export const isFalsy = (value: any) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
 // 清理空值(避免修改原对象)
 export const cleanObject = (object: object) => {
@@ -24,7 +24,7 @@ export const useMount = (callback: () => void) => {
 };
 
 // delay?: number 表示该参数可以不传，要么就传 number
-export const useDebounce = (value: any, delay?: number) => {
+export const useDebounce = (value: unknown, delay?: number): any => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     // 每次 value 变化后设置一个定时器
