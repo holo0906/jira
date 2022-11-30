@@ -2,35 +2,22 @@ import { useEffect, useState } from "react";
 import { List } from "./list";
 import { SearchPanel } from "./search-panel";
 import { cleanObject, useMount, useDebounce } from "utils";
-import * as qs from "qs";
-
-// 运行 npm start 时读取 .env.development 下的变量
-// 运行 npm run build 时读取 .env 下的变量
-// 会根据环境自动识别
-const apiUrl = process.env.REACT_APP_API_URL;
+import { useHttp } from "utils/http";
 
 export const ProjectListScreen = () => {
   const [param, setParam] = useState({ name: "", personId: "" });
   const [users, setUsers] = useState([]);
   const [list, setList] = useState([]);
-
   const debouncedParam = useDebounce(param, 500);
+  const client = useHttp();
 
   useEffect(() => {
     // 请求数据 修改搜索框或修改选择框
-    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`).then(async (response) => {
-      if (response.ok) {
-        setList(await response.json());
-      }
-    });
+    client("projects", { data: cleanObject(debouncedParam) }).then(setList);
   }, [debouncedParam]);
 
   useMount(() => {
-    fetch(`${apiUrl}/users`).then(async (response) => {
-      if (response.ok) {
-        setUsers(await response.json());
-      }
-    });
+    client("users").then(setUsers);
   });
 
   return (
